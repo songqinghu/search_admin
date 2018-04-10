@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wxss.dao.impl.BannerDaoImpl">
+
+<!-- 	<resultMap id="userMap" type="User">
+		<id column="id" property="userId" />
+		<result column="picture_path" property="userPic" />
+		<result column="display_name" property="userName" />
+		<result column="mobile" property="phoneId" />
+		<result column="created_at" property="createTime" />not same 
+			type,notice to do if has problem
+		<result column="expert_audit_status" property="status" />
+		<result column="type" property="type" />
+		<result column="user_sign" property="user_sign" />
+	</resultMap> -->
+
+	<select id="getShowBanners"  resultType="cn.wxss.domain.Banner">
+
+       select id,imageUrl,pageUrl,`level` from banner where codeType = 0  ORDER BY `level` desc;
+
+	</select>
+
+	<insert id="addBanner" parameterType="cn.wxss.domain.Banner">
+		INSERT INTO banner (
+		imageUrl,
+		pageUrl,
+		`level`
+		)
+		VALUES
+		(
+		'${imageUrl}',
+		'${pageUrl}',
+		${level}
+		)
+
+	</insert>
+<!--
+
+
+	<update id="updatePassword" parameterType="cn.wxss.domain.User" >
+		UPDATE user SET password='${password}' WHERE phoneNumber=${phoneNumber};
+	</update>
+	-->
+	
+<!-- 	<select id="getMinIdByCurrentId" resultType="long">
+		SELECT MIN(id) FROM
+		ecp_users WHERE id > #{id}
+	</select>
+
+	<select id="getUserRangeList" parameterType="Map" resultType="HashMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id where (type!=0 AND type!=5) and
+		${query_condition} order by id asc
+	</select>
+
+	<select id="getUserMaxId" resultType="long">
+		SELECT MAX(id) AS maxId
+		FROM ecp_users
+	</select>
+
+	<select id="getUserListByIds" resultType="HashMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id where (type!=0 AND type!=5) and id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultMap="userMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id
+		where (type!=0 AND type!=5) and id =#{id}
+	</select>
+
+	<select id="getUserAuditStatus" parameterType="java.lang.Long"
+		resultType="java.lang.Integer">
+		select audit_status from gome_user_expert where
+		new_user_id= #{id} limit 0,1;
+	</select> -->
+
+</mapper>

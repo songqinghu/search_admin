@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wxss.dao.impl.OrderPayDaoImpl">
+
+<!-- 	<resultMap id="userMap" type="User">
+		<id column="id" property="userId" />
+		<result column="picture_path" property="userPic" />
+		<result column="display_name" property="userName" />
+		<result column="mobile" property="phoneId" />
+		<result column="created_at" property="createTime" />not same 
+			type,notice to do if has problem
+		<result column="expert_audit_status" property="status" />
+		<result column="type" property="type" />
+		<result column="user_sign" property="user_sign" />
+	</resultMap> -->
+
+<!-- 
+	<select id="checkUsername" parameterType="java.lang.String" resultType="long">
+		SELECT
+		count(id) AS num
+			FROM
+				user
+			WHERE
+		username = '#{username}';
+	</select>
+-->
+	<select id="getOrderById"  resultType="cn.wxss.domain.Order">
+		SELECT
+			id,orderId,orderName,orginMoney,payMoney,`status`,userId,codeType,orderType
+			FROM
+				`order`
+			WHERE
+		userId = ${userId}
+		AND
+		orderId='${orderId}'
+	</select> 
+	
+
+	
+	<insert id="addOrder" parameterType="cn.wxss.domain.Order">
+			INSERT INTO `order` (
+				orderId,
+				orderName,
+				userId,
+				orginMoney,
+				payMoney,
+				orderType
+		    )
+		    VALUES
+			(
+				'${orderId}',
+				'${orderName}',
+				${userId},
+				${orginMoney},
+				${payMoney},
+				${orderType}
+			)
+	</insert>
+
+    <update id="updateOrderStatusById" parameterType="string" >
+		UPDATE `order` SET status=2 WHERE orderId=#{orderId};
+	</update>
+	
+<!-- 	<update id="updatePassword" parameterType="cn.wxss.domain.User" >
+		UPDATE user SET password='${password}' WHERE phoneNumber=${phoneNumber};
+	</update> -->
+	
+
+</mapper>

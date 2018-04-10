@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wxss.dao.impl.AreaOpearterDaoImpl">
+
+<!-- 	<resultMap id="locationMap" type="location">
+		<id column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />not same 
+			type,notice to do if has problem
+		<result column="city" property="city" />
+		<result column="city_code" property="cityCode" />
+		<result column="address_detail" property="address" />
+		<result column="is_delete" property="isDelete" />
+	</resultMap> -->
+
+<!-- 	<select id="getMinIdByCurrentId" resultType="long">
+		SELECT MIN(id) FROM
+		ecp_users WHERE id > #{id}
+	</select> -->
+
+	<select id="getProvince"  resultType="cn.wxss.domain.Area">
+		SELECT
+			id,
+			areaName,
+			parentId
+		FROM
+			area
+		WHERE
+			parentId = 0
+		ORDER BY
+			id;
+	</select>
+	
+    <select id="getAll"  resultType="cn.wxss.domain.Area">
+		SELECT
+			id,
+			areaName,
+			parentId
+		FROM
+			area
+		ORDER BY
+			id;
+	</select>
+	
+	<select id="getCity"  parameterType="long" resultType="cn.wxss.domain.Area">
+		SELECT
+			id,
+			areaName,
+			parentId
+		FROM
+			area
+		WHERE
+			parentId = #{parentId}
+		ORDER BY
+			id;
+	</select>
+	
+    <select id="checkCityCode"   resultType="java.lang.Long">
+		SELECT
+			count(id)
+		FROM
+			area
+		WHERE
+			parentId = ${parentId}
+		AND
+		    id=${cityId}
+		AND
+		    parentId !=0;
+	</select>
+
+	<select id="getAreaNameById" parameterType="long" resultType="string">
+		SELECT
+		areaName
+		FROM
+		area
+		WHERE
+		id = #{id}
+	</select>
+<!-- 
+	<select id="getUserListByIds" resultType="HashMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id where (type!=0 AND type!=5) and id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultMap="userMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id
+		where (type!=0 AND type!=5) and id =#{id}
+	</select>
+
+	<select id="getUserAuditStatus" parameterType="java.lang.Long"
+		resultType="java.lang.Integer">
+		select audit_status from gome_user_expert where
+		new_user_id= #{id} limit 0,1;
+	</select>
+ -->
+</mapper>

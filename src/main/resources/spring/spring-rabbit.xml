@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+                http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+                http://www.springframework.org/schema/context/spring-context.xsd
+            http://www.springframework.org/schema/rabbit
+                http://www.springframework.org/schema/rabbit/spring-rabbit-1.0.xsd">
+
+	<!-- 灰度环境不消费MQ -->
+	<beans profile="local,pre,pre2,gc3pre,prd">
+		<!-- 连接服务配置 -->
+		<rabbit:connection-factory id="connectionFactory"
+			host="${rabbit.host}" username="${rabbit.username}" password="${rabbit.password}"
+			port="${rabbit.port}" virtual-host="${rabbit.vhost}" />
+
+		<rabbit:admin connection-factory="connectionFactory" />
+
+		<!-- 监听器容器 -->
+		<rabbit:listener-container
+			connection-factory="connectionFactory" acknowledge="auto"
+			concurrency="1" prefetch="1000">
+			<rabbit:listener queue-names="${profiles.mq}.user" ref="userConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.group" ref="socialGroupConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.topic" ref="socialTopicConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.topicReply"
+				ref="socialTopicReplyConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.topicSubReply"
+				ref="socialTopicSubReplyConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.member"
+				ref="socialMemberReplyConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.groupPersons"
+				ref="socialgroupPersonsConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.tag" ref="tagConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.lolLocation" ref="locationConsumer" />
+			<rabbit:listener queue-names="${profiles.mq}.officialAccounts" ref="beautyNumberConsumer" />
+		</rabbit:listener-container>
+
+	</beans>
+</beans>

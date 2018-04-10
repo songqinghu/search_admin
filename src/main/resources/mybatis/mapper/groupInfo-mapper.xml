@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wxss.dao.impl.GroupInfoDao">
+
+	<resultMap id="GroupInfoMap" type="GroupInfo">
+	<id column="id" property="groupInfoId" />
+	<result column="userId" property="userId" />
+	<result column="groupName" property="groupName" />
+	<result column="groupImage" property="groupImage" />
+	<result column="introduction" property="introduction" />
+	<result column="tags" property="tags" />
+	<result column="codeType" property="codeType" />
+	<result column="updateDate" property="updateDate" />
+</resultMap>
+
+	<insert id="addGroupInfo" parameterType="GroupInfo" >
+		INSERT INTO groupInfo (
+			userId,
+      uniqueId,
+			groupName,
+			groupImage,
+			coverImage,
+			userWechat,
+			tags,
+			description,
+			provinceId,
+			cityId,
+			parentCategory,
+			category
+		)
+		VALUES
+	  (
+			   ${userId},
+		      '${uniqueId}',
+			'${groupName}',
+			'${groupImage}',
+			'${coverImage}',
+			'${userWechat}',
+			'${tags}',
+			'${description}',
+			${provinceId},
+			${cityId},
+			${parentCategory},
+			${category}
+	   )
+	</insert>
+	
+	<update id="updateGroupInfoStatus" parameterType="string" >
+		UPDATE `groupInfo` SET codeType=1 WHERE uniqueId=#{uniqueId};
+	</update>
+
+	<select id="selectMaxId" resultType="long">
+		SELECT MAX(id) AS maxId
+		FROM groupInfo;
+	</select>
+
+	<select id="findGroupInfoByRange" resultType="GroupInfo">
+		select `id`  as groupInfoId,`userId`,`uniqueId`,`groupName`,`groupImage`,coverImage,`userWechat`,`tags`,`description`,`provinceId`,`cityId`,`parentCategory`,`category`,`updateDate`, `codeType`  from `groupInfo` where codeType = ${type} And id BETWEEN ${start_id} AND ${end_id} order by id ASC
+	</select>
+
+	<select id="findGroupInfoByIdList" resultType="GroupInfo">
+		select `id`  as groupInfoId,`userId`,`uniqueId`,`groupName`,`groupImage`,coverImage,`userWechat`,`tags`,`description`,`provinceId`,`cityId`,`parentCategory`,`category`,`updateDate`, `codeType`  from `groupInfo`
+		where codeType=2 and id in
+		<foreach item="item" index="index" collection="array" open="("
+				 separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="selectByUUID" parameterType="string"  resultType="GroupInfo">
+		select `id`  as groupInfoId,`userId`,`uniqueId`,`groupName`,`groupImage`,coverImage,`userWechat`,`tags`,`description`,`provinceId`,`cityId`,`parentCategory`,`category`,`updateDate`, `codeType`  from `groupInfo` where uniqueId = #{uniqueId};
+	</select>
+
+	<select id="isExistByUUID" parameterType="string"  resultType="long">
+		select  count(id)  from `groupInfo` where uniqueId = #{uniqueId};
+	</select>
+
+<!--
+	<select id="getBeautyNumberRangeList" parameterType="Map"  resultMap="BeautyNumberMap">
+	   SELECT
+		    id,
+			name,
+			image_url imageUrl,
+			introduction,
+			status
+		FROM
+			official_accounts_info
+		WHERE
+		
+		${query_condition}
+		 
+		ORDER BY
+		id ASC
+		
+	</select>
+	
+
+ 
+
+
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultMap="userMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id
+		where (type!=0 AND type!=5) and id =#{id}
+	</select>
+ -->
+</mapper>

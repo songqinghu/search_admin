@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.wxss.dao.impl.CouponDaoImpl">
+
+<!-- 	<resultMap id="userMap" type="User">
+		<id column="id" property="userId" />
+		<result column="picture_path" property="userPic" />
+		<result column="display_name" property="userName" />
+		<result column="mobile" property="phoneId" />
+		<result column="created_at" property="createTime" />not same 
+			type,notice to do if has problem
+		<result column="expert_audit_status" property="status" />
+		<result column="type" property="type" />
+		<result column="user_sign" property="user_sign" />
+	</resultMap> -->
+
+	<select id="getUserNotUseCoupon"  resultType="cn.wxss.domain.Coupon">
+         SELECT
+			id,
+			couponId,
+			userId,
+			type,
+			money,
+			termDate
+		FROM
+			coupon
+		WHERE
+			userId = ${userId}
+		AND isUse = 0
+       limit ${start},10;
+	</select>
+
+	<select id="getCouponById"  resultType="cn.wxss.domain.Coupon">
+         SELECT
+			id,
+			couponId,
+			userId,
+			type,
+			money,
+      isUse,
+			termDate
+		FROM
+			coupon
+		WHERE
+			userId = ${userId}
+			AND
+           couponId = '${couponId}';
+	</select>
+	
+	
+	<select id="getUserNotUseCouponNum" parameterType="java.lang.Long" resultType="java.lang.Long">
+         SELECT
+			count(id) as num
+		FROM
+			coupon
+		WHERE
+			userId = #{userId}
+		AND isUse = 0;
+	</select>
+	
+    <update id="updateCouponStatusById"  >
+		UPDATE coupon SET isUse=1 WHERE couponId=#{couponId};
+	</update>
+	
+<!-- 	<select id="checkUsername" parameterType="java.lang.String" resultType="long">
+		SELECT
+		count(id) AS num
+			FROM
+				user
+			WHERE
+		username = '#{username}';
+	</select>
+
+	<select id="userLogin" parameterType="cn.wxss.domain.User" resultType="Long">
+		SELECT
+		count(id) AS num
+			FROM
+				user
+			WHERE
+		phoneNumber = ${phoneNumber}
+		AND
+		password='${password}'
+	</select>
+	
+    <select id="getUserByPhone" parameterType="java.lang.Long" resultType="cn.wxss.domain.User">
+		SELECT
+		id
+			FROM
+				user
+			WHERE
+		phoneNumber = #{phoneNumber};
+	</select>
+	
+	<insert id="addUser" parameterType="cn.wxss.domain.User">
+	  INSERT INTO user (
+			phoneNumber,
+			password
+		)
+		VALUES
+	    (
+			${phoneNumber},
+			'${password}'
+	    )
+	
+	</insert>
+
+	<update id="updatePassword" parameterType="cn.wxss.domain.User" >
+		UPDATE user SET password='${password}' WHERE phoneNumber=${phoneNumber};
+	</update> -->
+	
+	
+<!-- 	<select id="getMinIdByCurrentId" resultType="long">
+		SELECT MIN(id) FROM
+		ecp_users WHERE id > #{id}
+	</select>
+
+	<select id="getUserRangeList" parameterType="Map" resultType="HashMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id where (type!=0 AND type!=5) and
+		${query_condition} order by id asc
+	</select>
+
+	<select id="getUserMaxId" resultType="long">
+		SELECT MAX(id) AS maxId
+		FROM ecp_users
+	</select>
+
+	<select id="getUserListByIds" resultType="HashMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id where (type!=0 AND type!=5) and id in
+		<foreach item="item" index="index" collection="list" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</select>
+
+	<select id="getUserById" parameterType="java.lang.Long"
+		resultMap="userMap">
+		select
+		ecp_u.id,ecp_u.mobile,ecp_u.display_name,ecp_u.created_at,ecp_u.type,gome_u_e.picture_path,gome_u_e.user_sign,gome_u_e.expert_audit_status
+		from ecp_users ecp_u left join gome_user_extras gome_u_e on
+		ecp_u.id=gome_u_e.member_id
+		where (type!=0 AND type!=5) and id =#{id}
+	</select>
+
+	<select id="getUserAuditStatus" parameterType="java.lang.Long"
+		resultType="java.lang.Integer">
+		select audit_status from gome_user_expert where
+		new_user_id= #{id} limit 0,1;
+	</select> -->
+
+</mapper>
